@@ -6,8 +6,7 @@ public class Train {
     private String TrainName;
     private String TrainWay;
 
-    public Train(int id, String trainName, String trainWay) {
-        this.id = id;
+    public Train(String trainName, String trainWay) {
         TrainName = trainName;
         TrainWay = trainWay;
     }
@@ -21,7 +20,7 @@ public class Train {
     }
 
     public void setTrainName(String trainName) {
-        TrainName = trainName;
+        this.TrainName = trainName;
     }
 
     public String getTrainWay() {
@@ -29,6 +28,6 @@ public class Train {
     }
 
     public void setTrainWay(String trainName) {
-        TrainName = trainName;
+        this.TrainName = trainName;
     }
 }
