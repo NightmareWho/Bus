@@ -1,12 +1,17 @@
 package ru.university.rogachev.model;
 
+import java.util.List;
+
 public class Train {
 
     private int id;
+    private String number;
     private String TrainName;
     private String TrainWay;
+    public List<RoutePoint> Points;
 
-    public Train(String trainName, String trainWay) {
+    public Train(int id, String trainName, String trainWay) {
+        this.id = id;
         TrainName = trainName;
         TrainWay = trainWay;
     }
@@ -29,5 +34,13 @@ public class Train {
 
     public void setTrainWay(String trainName) {
         this.TrainName = trainName;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getNumber(){
+        return number;
     }
 }
