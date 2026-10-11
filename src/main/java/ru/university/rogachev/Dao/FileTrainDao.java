@@ -1,11 +1,18 @@
-package ru.university.rogachev.dao;
+package ru.university.rogachev.Dao;
 
+import ru.university.rogachev.model.RoutePoint;
 import ru.university.rogachev.model.Train;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileTrainDao implements TrainDao{
+public class FileTrainDao implements ru.university.rogachev.Dao.TrainDao {
     private final String filePath;
 
     public FileTrainDao(String filePath){
@@ -16,8 +23,31 @@ public class FileTrainDao implements TrainDao{
         return new ArrayList<>();
     }
 
-    private void writeAll(List<Train> trains){
+    private String formatTime(LocalTime time) {
+        if(time == null){
+            return "";
+        }
+        else {
+            return time.toString();
+        }
+    }
 
+    private void writeAll(List<Train> trains) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(filePath), StandardCharsets.UTF_8)) {
+
+            for (Train train : trains) {
+                writer.write("TRAIN;" + train.getNumber() + ";" + train.getRouteName());
+                writer.newLine();
+
+                for (RoutePoint point : train.getPoints()) {
+                    writer.write("ROUTE;" + point.getStation() +";"+formatTime(point.getArrivalTime())+";"+formatTime(point.getDepartureTime()));
+                    writer.newLine();
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось записать файл", e);
+        }
     }
 
     public void create(Train train){

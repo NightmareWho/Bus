@@ -1,46 +1,56 @@
 package ru.university.rogachev.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Train {
 
-    private int id;
     private String number;
-    private String TrainName;
-    private String TrainWay;
-    public List<RoutePoint> Points;
+    private String routeName;
+    private final List<RoutePoint> points = new ArrayList<>();
 
-    public Train(int id, String trainName, String trainWay) {
-        this.id = id;
-        TrainName = trainName;
-        TrainWay = trainWay;
+    public Train(String number, String routeName) {
+        if (number == null || number.trim().isEmpty()){
+            throw new IllegalArgumentException("Номер поезда не может быть пустым");
+        }
+        this.number = number.trim();
+        this.setRouteName(routeName);
     }
 
-    public int getId() {
-        return id;
+    public String getRouteName() {
+        return routeName;
     }
 
-    public String getTrainName() {
-        return TrainName;
-    }
-
-    public void setTrainName(String trainName) {
-        this.TrainName = trainName;
-    }
-
-    public String getTrainWay() {
-        return TrainWay;
-    }
-
-    public void setTrainWay(String trainName) {
-        this.TrainName = trainName;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
+    public void setRouteName(String routeName) {
+        if (routeName == null || routeName.trim().isEmpty()){
+            throw new IllegalArgumentException("Название маршрута не может быть null");
+        }
+        this.routeName = routeName;
     }
 
     public String getNumber(){
         return number;
+    }
+
+    public void addPoint(RoutePoint point){
+        if (point == null){
+            throw new IllegalArgumentException("Пункт маршрута не может быть null");
+        }
+        points.add(point);
+    }
+
+    public void removePoint(int index){
+        points.remove(index);
+    }
+
+    public void updatePoint(int index, RoutePoint point){
+        if (point == null){
+            throw new IllegalArgumentException("Пункт маршрута не может быть null");
+        }
+        points.set(index, point);
+    }
+
+    public List<RoutePoint> getPoints() {
+        return new ArrayList<>(points);
     }
 }

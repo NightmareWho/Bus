@@ -4,8 +4,8 @@ import ru.university.rogachev.model.Train;
 
 public class TrainService {
 
-    public void createTrain(String name, String way) {
-        Train train = new Train(name, way);
+    public void createTrain(String name, String number) {
+        Train train = new Train(name, number);
 
     }
 }

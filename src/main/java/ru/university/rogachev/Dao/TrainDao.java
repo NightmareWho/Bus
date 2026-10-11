@@ -1,4 +1,4 @@
-package ru.university.rogachev.dao;
+package ru.university.rogachev.Dao;
 
 import ru.university.rogachev.model.Train;
 
