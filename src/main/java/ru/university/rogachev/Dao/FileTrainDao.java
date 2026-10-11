@@ -3,6 +3,7 @@ package ru.university.rogachev.Dao;
 import ru.university.rogachev.model.RoutePoint;
 import ru.university.rogachev.model.Train;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +21,39 @@ public class FileTrainDao implements ru.university.rogachev.Dao.TrainDao {
     }
 
     private List<Train> readAll(){
-        return new ArrayList<>();
+        Path path = Path.of(filePath);
+        List<Train> trains = new ArrayList<>();
+        if (!Files.exists(path)) {
+            return trains;
+        }
+
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)){
+            Train current = null;
+            String line;
+
+            while((line = reader.readLine()) != null){
+                if(line.trim().isEmpty()){
+                    continue;
+                }
+                String[] parts = line.split(";", -1);
+                if (parts[0].equals("TRAIN")){
+                    Train train = new Train(parts[1], parts[2]);
+                    trains.add(train);
+                    current = train;
+                }
+                else if(parts[0].equals("POINT")){
+                    if(current == null){
+                        throw new RuntimeException("Файл повреждён: точка без поезда");
+                    }
+                    RoutePoint point = new RoutePoint(parts[1], parseTime(parts[2]), parseTime(parts[3]));
+                    current.addPoint(point);
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось прочитать файл", e);
+        }
+        return trains;
     }
 
     private String formatTime(LocalTime time) {
@@ -40,7 +73,7 @@ public class FileTrainDao implements ru.university.rogachev.Dao.TrainDao {
                 writer.newLine();
 
                 for (RoutePoint point : train.getPoints()) {
-                    writer.write("ROUTE;" + point.getStation() +";"+formatTime(point.getArrivalTime())+";"+formatTime(point.getDepartureTime()));
+                    writer.write("POINT;" + point.getStation() +";"+formatTime(point.getArrivalTime())+";"+formatTime(point.getDepartureTime()));
                     writer.newLine();
                 }
             }
@@ -73,5 +106,12 @@ public class FileTrainDao implements ru.university.rogachev.Dao.TrainDao {
 
     public List<Train> findAll() {
         return readAll();
+    }
+
+    private LocalTime parseTime(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return null;
+        }
+        return LocalTime.parse(text.trim());
     }
 }
