@@ -13,10 +13,7 @@ public class Main {
         TrainDao trainDao = new FileTrainDao("trains.txt");
         TrainService trainService = new TrainService(trainDao);
         trainService.createTrain("001A", "Москва - Питер");
-        trainService.addRoute("001A", "Москва",);
-        train.addPoint(new RoutePoint("Москва", null, LocalTime.of(10, 0)));
-        train.addPoint(new RoutePoint("Тверь", LocalTime.of(12, 0), LocalTime.of(12, 5)));
-        train.addPoint(new RoutePoint("Питер", LocalTime.of(15, 0), null));
-        new FileTrainDao("trains.txt").create(train);
+        trainService.addRoute("001A", "Москва",null, LocalTime.of(10, 0));
+
     }
 }
