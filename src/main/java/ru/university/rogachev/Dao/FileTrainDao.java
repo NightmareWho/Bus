@@ -1,4 +1,4 @@
-package ru.university.rogachev.Dao;
+package ru.university.rogachev.dao;
 
 import ru.university.rogachev.model.RoutePoint;
 import ru.university.rogachev.model.Train;
@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileTrainDao implements ru.university.rogachev.Dao.TrainDao {
+public class FileTrainDao implements ru.university.rogachev.dao.TrainDao {
     private final String filePath;
 
     public FileTrainDao(String filePath){
