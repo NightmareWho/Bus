@@ -1,13 +1,19 @@
 package ru.university.rogachev;
 
 import ru.university.rogachev.dao.FileTrainDao;
+import ru.university.rogachev.dao.SqlTrainDao;
 import ru.university.rogachev.service.TrainService;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        new SqlTrainDao("jdbc:sqlite:mydatabase.db");
         TrainService trainService = new TrainService(new FileTrainDao("trains.txt"));
         Scanner in = new Scanner(System.in);
 
